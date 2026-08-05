@@ -1,0 +1,4 @@
+Required files:
+hero.jpg
+special.jpg
+photo-01.jpg through photo-12.jpg

@@ -1,0 +1,36 @@
+AGNES BIRTHDAY — NEW 10-PHOTO FINALE
+
+Paste ONLY the new finale photos into this folder.
+
+Recommended filenames:
+  finale-01.jpg
+  finale-02.jpg
+  finale-03.jpg
+  finale-04.jpg
+  finale-05.jpg
+  finale-06.jpg
+  finale-07.jpg
+  finale-08.jpg
+  finale-09.jpg
+  finale-10.jpg
+
+You may also use:
+  .jpeg
+  .png
+  .webp
+
+The website automatically tries JPG, JPEG, PNG and WebP for every number.
+Example: finale-01.png will work even though the data file says finale-01.jpg.
+
+Recommended photo format:
+  Portrait photos: 4:5 or 3:4
+  Minimum size: 1200 × 1500 pixels
+  Keep the face near the centre
+  Do not add the old photo-01.jpg files here
+
+To change a memory title:
+  Open src/data/memories.js
+  Edit the title inside the finalePhotos list.
+
+The existing website photos remain in public/photos.
+This final cinematic section uses ONLY public/finale-photos.
