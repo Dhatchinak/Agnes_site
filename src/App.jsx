@@ -581,8 +581,161 @@ function milestoneCountdown(target, now) {
   };
 }
 
+function DayTwoLetter({ onBack, onClose }) {
+  const [letterOpen, setLetterOpen] = useState(false);
+
+  return <motion.section
+    className="day-two-world"
+    initial={{ opacity: 0, y: 26, scale: .985 }}
+    animate={{ opacity: 1, y: 0, scale: 1 }}
+    exit={{ opacity: 0, y: 18, scale: .99 }}
+    transition={{ duration: .72, ease: [.16, 1, .3, 1] }}
+  >
+    <div className="day-two-ambient" aria-hidden="true">
+      {Array.from({ length: 18 }, (_, index) => <motion.i
+        key={index}
+        style={{
+          '--d2x': `${4 + (index * 31) % 92}%`,
+          '--d2y': `${5 + (index * 47) % 86}%`,
+          '--d2r': `${-34 + (index * 19) % 68}deg`
+        }}
+        animate={{ y: [0, -12 - (index % 4) * 5, 0], x: [0, (index % 2 ? 1 : -1) * (5 + index % 5), 0], opacity: [.08, .5, .08], rotate: [0, index % 2 ? 12 : -12, 0] }}
+        transition={{ duration: 5.2 + (index % 5) * .48, repeat: Infinity, delay: index * .17, ease: 'easeInOut' }}
+      />)}
+    </div>
+
+    <div className="day-two-toolbar">
+      <button type="button" onClick={onBack} className="day-two-back"><span>←</span> Three little days</button>
+      <button type="button" onClick={onClose} className="day-two-close" aria-label="Close the letter"><X/></button>
+    </div>
+
+    <div className={`day-two-layout ${letterOpen ? 'is-open' : ''}`}>
+      <motion.div
+        className="day-two-photo-column"
+        initial={{ opacity: 0, x: -45, filter: 'blur(12px)' }}
+        animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+        transition={{ delay: .18, duration: .9, ease: [.16, 1, .3, 1] }}
+      >
+        <div className="day-two-photo-halo" aria-hidden="true"/>
+        <motion.figure
+          className="day-two-photo-frame"
+          initial={{ opacity: 0, y: 34, rotate: -4.5, scale: .95 }}
+          animate={{ opacity: 1, y: 0, rotate: -1.5, scale: 1 }}
+          whileHover={{ y: -6, rotate: -.4, scale: 1.012 }}
+          transition={{ duration: .9, delay: .3, ease: [.16, 1, .3, 1] }}
+        >
+          <div className="day-two-photo-window">
+            <img src="/photos/day-two-agnes.jpg" alt="Agnes in a soft green dress"/>
+            <div className="day-two-photo-light" aria-hidden="true"/>
+          </div>
+          <figcaption>
+            <small>06 · AUGUST · DAY TWO</small>
+            <strong>My Agnes</strong>
+            <span>my princess · my angel · my precious person</span>
+          </figcaption>
+        </motion.figure>
+        <motion.div className="day-two-photo-note" initial={{ opacity: 0, y: 18, rotate: -4 }} animate={{ opacity: 1, y: 0, rotate: -3 }} transition={{ delay: .72, duration: .7 }}>
+          <Heart fill="currentColor"/>
+          <span>Your smile will always be one of the most precious things in my little world.</span>
+        </motion.div>
+      </motion.div>
+
+      <AnimatePresence mode="wait">
+        {!letterOpen ? <motion.div
+          key="sealed"
+          className="day-two-sealed-letter"
+          initial={{ opacity: 0, x: 48, rotateY: -8 }}
+          animate={{ opacity: 1, x: 0, rotateY: 0 }}
+          exit={{ opacity: 0, y: -16, scale: .97, filter: 'blur(7px)' }}
+          transition={{ delay: .26, duration: .82, ease: [.16, 1, .3, 1] }}
+        >
+          <div className="day-two-letter-topline"><i/><Heart fill="currentColor"/><i/></div>
+          <span className="day-two-kicker">A LETTER FOR MY AGNES</span>
+          <h2>Yesterday celebrated your birthday.<br/><em>Today celebrates you.</em></h2>
+          <p>I kept a few words here for the joyful, strong and precious girl who means more to me than she may ever realise.</p>
+          <motion.button className="day-two-seal-button" type="button" onClick={() => setLetterOpen(true)} whileHover={{ y: -4, scale: 1.02 }} whileTap={{ scale: .98 }}>
+            <span className="day-two-seal"><Heart fill="currentColor"/></span>
+            <span><small>TO MY CHELLOM</small><strong>Open my letter</strong></span>
+            <ArrowRight/>
+          </motion.button>
+          <small className="day-two-tap-note">Touch the rose seal and let the letter unfold.</small>
+        </motion.div> : <motion.article
+          key="opened"
+          className="day-two-letter-paper"
+          initial={{ opacity: 0, rotateX: -82, scaleY: .24, y: 72, filter: 'blur(12px)' }}
+          animate={{ opacity: 1, rotateX: 0, scaleY: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, scale: .98 }}
+          transition={{ duration: 1, ease: [.16, 1, .3, 1] }}
+          style={{ transformOrigin: '50% 0%' }}
+        >
+          <motion.div
+            className="day-two-letter-bloom"
+            aria-hidden="true"
+            initial={{ opacity: 0, scale: .65 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: .38, duration: .8, ease: [.16, 1, .3, 1] }}
+          >
+            {Array.from({ length: 8 }, (_, index) => <i key={index} style={{ '--bloom-i': index }}/>) }
+          </motion.div>
+          <motion.div
+            className="day-two-unfold-flap"
+            aria-hidden="true"
+            initial={{ rotateX: -95, opacity: 0 }}
+            animate={{ rotateX: 0, opacity: 1 }}
+            transition={{ delay: .2, duration: .9, ease: [.16, 1, .3, 1] }}
+          />
+          <div className="day-two-paper-ribbon" aria-hidden="true"><i/><Heart fill="currentColor"/><i/></div>
+          <div className="day-two-letter-scroll">
+            <motion.span className="day-two-letter-date" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .48 }}>06 AUGUST · A LETTER ONLY FOR YOU</motion.span>
+            <motion.h2 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .56, duration: .7 }}>My dearest Agnes,</motion.h2>
+
+            {[
+              'Agnes, I always want to see you happy, joyful, and smiling in every moment of your life. More than anything, I want your days to be filled with peace, laughter, and a heart that feels light.',
+              'Your smile means so much to me. It is not just a smile to me — it is something precious, something I want to protect with all my heart. Whenever you smile, I feel happy too. Whenever you are peaceful, my heart feels peaceful. That is how important you are to me.',
+              'So please, never let yourself stay in sadness for too long. You are a strong girl, Agnes — stronger than you know, more beautiful than you realise, and more precious than words can ever explain.',
+              'As long as I am with you, I will always try to keep you smiling. I will stand by you, care for you, and do everything I can to protect your peace, your joy, and that beautiful smile of yours.',
+              'I truly cannot explain how much you mean to me. Even if I try, words are never enough. The place you have in my heart is far bigger than you imagine. You are not just important to me — you are the most important person to me.'
+            ].map((paragraph, index) => <motion.p key={paragraph} initial={{ opacity: 0, y: 13 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .68 + index * .12, duration: .62 }}>{paragraph}</motion.p>)}
+
+            <motion.div className="day-two-names" initial={{ opacity: 0, scale: .96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.35, duration: .7 }}>
+              <span>You are my <strong>Chellom.</strong></span>
+              <span>You are my <strong>Princess.</strong></span>
+              <span>You are my <strong>Angel.</strong></span>
+            </motion.div>
+
+            <motion.p initial={{ opacity: 0, y: 13 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5, duration: .62 }}>And more than all these beautiful names, you are my heart’s most precious person. I want to protect your peace, your happiness, your softness, your dreams, and the smile that makes everything around me feel brighter.</motion.p>
+
+            <motion.blockquote initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.65, duration: .72 }}>
+              <Heart fill="currentColor"/>
+              <span>I will always care for you.<br/>I will always protect your peace.<br/>I will always value your happiness.<br/>And I will always treasure your smile.</span>
+            </motion.blockquote>
+
+            <motion.p initial={{ opacity: 0, y: 13 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.82, duration: .62 }}>Because to me, your smile is not small. Your peace is not small. You are not small. You are someone deeply important to me — someone I could never take lightly.</motion.p>
+
+            <motion.div className="day-two-final-words" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.98, duration: .72 }}>
+              <small>ONE THING I ALWAYS WANT YOU TO REMEMBER</small>
+              <strong>Stay happy, my Agnes. Stay strong, my beautiful girl. And whenever life feels heavy, remember that there is someone who truly wants to bring your smile back.</strong>
+            </motion.div>
+
+            <motion.div className="day-two-signature" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.18, duration: .8 }}>
+              <span>You are very, very important to me — more than I can ever fully say.</span>
+              <strong>with all my care ♡</strong>
+            </motion.div>
+
+            <motion.div className="day-two-complete" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.35, duration: .72 }}>
+              <Check/>
+              <span><small>DAY TWO COMPLETE</small><strong>One final little surprise waits on 07 August.</strong></span>
+            </motion.div>
+          </div>
+        </motion.article>}
+      </AnimatePresence>
+    </div>
+  </motion.section>;
+}
+
 function ThreeDaySurprise({ onClose }) {
   const [now, setNow] = useState(Date.now());
+  const [activeDay, setActiveDay] = useState(null);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -594,215 +747,98 @@ function ThreeDaySurprise({ onClose }) {
     };
   }, []);
 
-  const moments = THREE_DAY_SURPRISES.map((item) => ({
-    ...item,
-    status: milestoneCountdown(item.target, now)
-  }));
-
-  const labels = ['CHAPTER 01', 'CHAPTER 02', 'CHAPTER 03'];
-
   return <motion.div
-    className="three-day-overlay three-day-overlay-v3"
+    className="three-day-overlay"
     role="dialog"
     aria-modal="true"
     aria-label="Three day birthday surprise"
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    transition={{ duration: .38 }}
+    transition={{ duration: .45 }}
   >
-    <div className="three-day-v3-glow three-day-v3-glow-left" aria-hidden="true"/>
-    <div className="three-day-v3-glow three-day-v3-glow-right" aria-hidden="true"/>
-    <div className="three-day-v3-grain" aria-hidden="true"/>
-
-    <div className="three-day-v3-sparkles" aria-hidden="true">
-      {Array.from({ length: 30 }, (_, index) => <motion.i
-        key={index}
-        style={{
-          '--x': `${3 + (index * 37) % 94}%`,
-          '--y': `${4 + (index * 53) % 90}%`,
-          '--s': `${2 + (index % 4)}px`,
-          '--d': `${index * .11}s`
-        }}
-        animate={{ opacity: [.08, .62, .08], scale: [.7, 1.35, .7], rotate: [0, 90, 180] }}
-        transition={{ duration: 3.4 + (index % 5) * .55, repeat: Infinity, delay: index * .08, ease: 'easeInOut' }}
-      />)}
-    </div>
-
-    <div className="three-day-v3-petals" aria-hidden="true">
-      {Array.from({ length: 16 }, (_, index) => <motion.i
-        key={index}
-        style={{
-          '--x': `${2 + (index * 41) % 96}%`,
-          '--y': `${-8 + (index * 29) % 88}%`,
-          '--r': `${-35 + (index * 23) % 70}deg`,
-          '--scale': `${.58 + (index % 5) * .12}`
-        }}
-        animate={{
-          y: [0, 70 + (index % 4) * 35, 155 + (index % 5) * 42],
-          x: [0, (index % 2 ? 1 : -1) * (14 + index % 7), (index % 2 ? -1 : 1) * (8 + index % 5)],
-          rotate: [0, 120 + index * 8, 280 + index * 12],
-          opacity: [0, .34, 0]
-        }}
-        transition={{ duration: 8.5 + (index % 6) * .9, repeat: Infinity, delay: -(index % 8) * 1.1, ease: 'linear' }}
-      />)}
-    </div>
-
-    <button className="three-day-close three-day-close-v3" type="button" onClick={onClose} aria-label="Close three day surprise"><X/></button>
-
-    <motion.section
-      className="three-day-scene three-day-scene-v3"
-      initial={{ opacity: 0, y: 18, scale: .988 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 10, scale: .992 }}
-      transition={{ delay: .04, duration: .72, ease: [.16, 1, .3, 1] }}
-    >
-      <header className="three-day-v3-topbar">
-        <div className="three-day-v3-brand">
-          <motion.span
-            className="three-day-v3-calendar"
-            animate={{ rotate: [-3, 3, -3], y: [0, -2, 0] }}
-            transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <Heart fill="currentColor"/>
-          </motion.span>
-          <div>
-            <strong>THREE LITTLE DAYS</strong>
-            <small>05 — 07 AUGUST 2026</small>
-          </div>
+    <AnimatePresence mode="wait">
+      {activeDay === '06' ? <DayTwoLetter key="day-two" onBack={() => setActiveDay(null)} onClose={onClose}/> : <motion.div key="three-days" className="three-day-view" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: .5 }}>
+        <div className="three-day-glow three-day-glow-left" aria-hidden="true"/>
+        <div className="three-day-glow three-day-glow-right" aria-hidden="true"/>
+        <div className="three-day-petals" aria-hidden="true">
+          {Array.from({ length: 18 }, (_, index) => <motion.i
+            key={index}
+            style={{
+              '--td-x': `${4 + (index * 29) % 92}%`,
+              '--td-y': `${3 + (index * 43) % 88}%`,
+              '--td-r': `${-28 + (index * 17) % 56}deg`
+            }}
+            animate={{ y: [0, -11 - (index % 4) * 5, 0], x: [0, (index % 2 ? 1 : -1) * (4 + index % 6), 0], opacity: [.12, .6, .12] }}
+            transition={{ duration: 4.8 + (index % 5) * .55, repeat: Infinity, delay: index * .16, ease: 'easeInOut' }}
+          />)}
         </div>
 
-        <div className="three-day-v3-for-her">
-          <span>FOR AGNES</span>
-          <Heart fill="currentColor"/>
-        </div>
-      </header>
+        <button className="three-day-close" type="button" onClick={onClose} aria-label="Close three day surprise"><X/></button>
 
-      <div className="three-day-v3-heading">
-        <motion.div
-          className="three-day-v3-emblem"
-          initial={{ opacity: 0, scale: .5, rotate: -14 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ delay: .18, duration: .72, ease: [.16, 1, .3, 1] }}
+        <motion.section
+          className="three-day-panel"
+          initial={{ opacity: 0, y: 34, scale: .97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: .98 }}
+          transition={{ delay: .08, duration: .72, ease: [.16, 1, .3, 1] }}
         >
-          <span/><Heart fill="currentColor"/><span/>
-        </motion.div>
+          <motion.div className="three-day-seal" initial={{ scale: .5, rotate: -14 }} animate={{ scale: 1, rotate: 0 }} transition={{ delay: .3, type: 'spring', stiffness: 170, damping: 16 }}>
+            <Sparkles/>
+          </motion.div>
+          <span className="three-day-kicker">THREE LITTLE DAYS · ONE BEAUTIFUL CELEBRATION</span>
+          <h2>This surprise does not end<br/><em>in just one day.</em></h2>
+          <p className="three-day-intro">Three dates are waiting for you. Each one opens a different little piece made only for my princess.</p>
 
-        <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .24, duration: .55 }}>
-          This surprise does not end in just one day.
-        </motion.p>
+          <div className="three-day-line" aria-hidden="true"><i/><Heart fill="currentColor"/><i/></div>
 
-        <motion.h2 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .32, duration: .72, ease: [.16, 1, .3, 1] }}>
-          <span>Three little days,</span> <em>one beautiful celebration</em>
-        </motion.h2>
-
-        <motion.small initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .48, duration: .66 }}>
-          Three dates are waiting for you. The first is complete, and the next two will quietly unlock when their moment arrives.
-        </motion.small>
-      </div>
-
-      <div className="three-day-v3-journey">
-        <svg className="three-day-v3-path" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
-          <motion.path
-            d="M75 64 C210 18 305 108 445 64 S680 20 795 64 S1010 108 1125 64"
-            fill="none"
-            stroke="url(#threeDayPathGradient)"
-            strokeWidth="2"
-            strokeDasharray="5 9"
-            strokeLinecap="round"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: .8 }}
-            transition={{ delay: .72, duration: 1.5, ease: [.16, 1, .3, 1] }}
-          />
-          <defs>
-            <linearGradient id="threeDayPathGradient" x1="0" x2="1">
-              <stop offset="0" stopColor="#deb06a"/>
-              <stop offset=".48" stopColor="#dc7da2"/>
-              <stop offset="1" stopColor="#b999d5"/>
-            </linearGradient>
-          </defs>
-        </svg>
-
-        <motion.span className="three-day-v3-path-heart heart-one" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.08, type: 'spring', stiffness: 180 }}><Heart fill="currentColor"/></motion.span>
-        <motion.span className="three-day-v3-path-heart heart-two" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.24, type: 'spring', stiffness: 180 }}><Heart fill="currentColor"/></motion.span>
-
-        <div className="three-day-v3-cards">
-          {moments.map((item, index) => {
-            const status = item.status;
-            const isComplete = status.complete;
-            return <motion.article
-              key={item.day}
-              className={`three-day-v3-card three-day-v3-card-${index + 1} ${isComplete ? 'is-complete' : 'is-locked'}`}
-              initial={{ opacity: 0, y: 30, scale: .97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: .62 + index * .14, duration: .72, ease: [.16, 1, .3, 1] }}
-              whileHover={{ y: -7, transition: { duration: .28 } }}
-            >
-              <motion.div
-                className="three-day-v3-date-medallion"
-                animate={isComplete
-                  ? { y: [0, -4, 0], boxShadow: ['0 18px 44px rgba(215,168,87,.16)', '0 22px 58px rgba(215,168,87,.31)', '0 18px 44px rgba(215,168,87,.16)'] }
-                  : { y: [0, -3, 0] }}
-                transition={{ duration: 4.4 + index * .45, repeat: Infinity, ease: 'easeInOut' }}
+          <div className="three-day-cards">
+            {THREE_DAY_SURPRISES.map((item, index) => {
+              const status = milestoneCountdown(item.target, now);
+              const isDayTwo = item.day === '06';
+              return <motion.article
+                key={item.day}
+                className={`three-day-card ${status.complete ? 'is-complete' : 'is-locked'} ${isDayTwo && status.complete ? 'is-openable' : ''}`}
+                initial={{ opacity: 0, y: 35 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: .42 + index * .16, duration: .65, ease: [.16, 1, .3, 1] }}
+                onClick={isDayTwo && status.complete ? () => setActiveDay('06') : undefined}
+                role={isDayTwo && status.complete ? 'button' : undefined}
+                tabIndex={isDayTwo && status.complete ? 0 : undefined}
+                onKeyDown={isDayTwo && status.complete ? event => { if (event.key === 'Enter' || event.key === ' ') setActiveDay('06'); } : undefined}
               >
-                <span>{item.month}</span>
-                <strong>{item.day}</strong>
-                <small>2026</small>
-                <motion.i
-                  className="three-day-v3-status-badge"
-                  animate={isComplete ? { scale: [1, 1.1, 1] } : { scale: [1, 1.06, 1], rotate: [0, -3, 3, 0] }}
-                  transition={{ duration: isComplete ? 2.1 : 3.2, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  {isComplete ? <Check/> : <LockKeyhole/>}
-                </motion.i>
-              </motion.div>
+                <div className="three-day-date">
+                  <small>{item.month}</small>
+                  <strong>{item.day}</strong>
+                </div>
+                <div className="three-day-status-icon">
+                  {status.complete ? <Check/> : <LockKeyhole/>}
+                </div>
+                <span className="three-day-status-label">{status.complete ? (isDayTwo ? 'OPEN NOW' : 'COMPLETED') : 'COUNTDOWN'}</span>
+                <h3>{isDayTwo && status.complete ? 'A letter for my Agnes' : item.title}</h3>
+                <p>{isDayTwo && status.complete ? 'A few words about your smile, your happiness, your strength, and how precious you are to me.' : item.note}</p>
 
-              <div className="three-day-v3-card-inner">
-                <span className="three-day-v3-chapter">{labels[index]} · {isComplete ? 'COMPLETE' : 'LOCKED'}</span>
-                <h3>{item.title}</h3>
-                <p>{item.note}</p>
-
-                {isComplete ? (
-                  <motion.div
-                    className="three-day-v3-complete"
-                    animate={{ boxShadow: ['0 10px 26px rgba(202,151,73,.08)', '0 13px 34px rgba(202,151,73,.17)', '0 10px 26px rgba(202,151,73,.08)'] }}
-                    transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
-                  >
-                    <Heart fill="currentColor"/>
-                    <span>The first chapter is yours</span>
-                  </motion.div>
+                {status.complete ? (
+                  isDayTwo ? <button type="button" className="three-day-open-letter" onClick={event => { event.stopPropagation(); setActiveDay('06'); }}><Heart fill="currentColor"/><span>Open today’s letter</span><ArrowRight/></button> : <div className="three-day-complete-mark"><Check/><span>This day is complete</span></div>
                 ) : (
-                  <div className="three-day-v3-timer" aria-label={`Countdown to ${item.day} August`}>
-                    {[['DAYS', status.days], ['HRS', status.hours], ['MIN', status.minutes], ['SEC', status.seconds]].map(([label, value], timerIndex) => <motion.div
-                      key={label}
-                      animate={label === 'SEC' ? { scale: [1, 1.035, 1] } : undefined}
-                      transition={label === 'SEC' ? { duration: 1, repeat: Infinity, ease: 'easeInOut' } : undefined}
-                    >
-                      <AnimatePresence mode="popLayout" initial={false}>
-                        <motion.strong
-                          key={value}
-                          initial={{ opacity: 0, y: -7 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 7 }}
-                          transition={{ duration: .22, delay: timerIndex * .01 }}
-                        >{String(value).padStart(2, '0')}</motion.strong>
-                      </AnimatePresence>
+                  <div className="three-day-timer" aria-label={`Countdown to ${item.day} August`}>
+                    {[['DAYS', status.days], ['HRS', status.hours], ['MIN', status.minutes], ['SEC', status.seconds]].map(([label, value]) => <div key={label}>
+                      <strong>{String(value).padStart(2, '0')}</strong>
                       <small>{label}</small>
-                    </motion.div>)}
+                    </div>)}
                   </div>
                 )}
+              </motion.article>;
+            })}
+          </div>
 
-                {!isComplete && <span className="three-day-v3-unlock"><Heart/> Unlocks on Aug {item.day}, 2026</span>}
-              </div>
-            </motion.article>;
-          })}
-        </div>
-      </div>
-
-      <motion.footer className="three-day-v3-footer" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.18, duration: .65 }}>
-        <span/><Sparkles/><em>Because the happiest feelings deserve more than a single day.</em><Sparkles/><span/>
-      </motion.footer>
-    </motion.section>
+          <motion.div className="three-day-footer-copy" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.05, duration: .7 }}>
+            <Heart fill="currentColor"/>
+            <span>Because one day was never enough to celebrate my princess.</span>
+          </motion.div>
+        </motion.section>
+      </motion.div>}
+    </AnimatePresence>
   </motion.div>;
 }
 
