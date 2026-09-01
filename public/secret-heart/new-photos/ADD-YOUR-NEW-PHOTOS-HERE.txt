@@ -1,0 +1,52 @@
+SECRET HEART — NEW PHOTO FOLDER
+===============================
+
+Put NEW photos only in this folder.
+The Secret Heart pages no longer use the old /public/photos images as fallbacks.
+
+Use these exact BASE filenames. Any of these extensions work:
+.jpg  .jpeg  .png  .webp
+
+1. agnes-main
+   Main Agnes portrait used on the "Every name still leads back to you" page.
+   Best ratio: portrait 4:5 or 3:4.
+
+2. memory-01
+3. memory-02
+4. memory-03
+5. memory-04
+6. memory-05
+7. memory-06
+   Six completely NEW photos for the Secret Heart memories page.
+   Best ratio: portrait or square; the layout crops automatically.
+
+8. proposal-main
+   Main photo on the final question/proposal page.
+   Best ratio: portrait 4:5.
+
+9. proposal-small
+   Small secondary memory shown beside the proposal photo.
+   Best ratio: portrait/square.
+
+10. keepsake
+    Photo shown after the YES flow on the keepsake/final chapter page.
+    Best ratio: portrait 4:5.
+
+Example:
+  agnes-main.jpg
+  memory-01.png
+  memory-02.webp
+  memory-03.jpg
+  memory-04.jpeg
+  memory-05.jpg
+  memory-06.png
+  proposal-main.jpg
+  proposal-small.webp
+  keepsake.jpg
+
+IMPORTANT
+---------
+Do not put these new Secret Heart images in /public/photos.
+Keep them here so the public birthday/gallery photos and private Secret Heart photos stay separate.
+
+If a photo is missing, the page shows a clean "Add new Secret Heart photo" placeholder instead of using an old photo.

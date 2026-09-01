@@ -4,6 +4,8 @@ import { Cake, ChevronDown, Heart, Mic, Music2, Pause, Play, Sparkles, Volume2, 
 import confetti from 'canvas-confetti';
 import { memories, reasons, finalePhotos } from './data/memories';
 import FinaleSequence from './components/FinaleSequence';
+import SecretHeartExperience from './components/SecretHeartExperience';
+import './secret-heart-entry.css';
 
 const BIRTHDAY = new Date('2026-08-05T00:00:00+05:30');
 const BIRTH_DATE = new Date('2004-08-05T00:00:00+05:30');
@@ -284,7 +286,7 @@ function TiltCard({ children, className='' }) {
 function TypeCaption({ text }) { const [shown,setShown]=useState(''); useEffect(()=>{setShown('');let i=0;const id=setInterval(()=>{i++;setShown(text.slice(0,i));if(i>=text.length)clearInterval(id)},28);return()=>clearInterval(id)},[text]); return <p>{shown}<span className="caret">|</span></p>; }
 
 
-function PasswordEntrance({ onUnlocked }) {
+function PasswordEntrance({ onUnlocked, onSecretHeart }) {
   const PASSWORD = '5824';
   const [digits, setDigits] = useState(['','','','']);
   const [status, setStatus] = useState('idle');
@@ -404,7 +406,7 @@ function PasswordEntrance({ onUnlocked }) {
             <span className="pe-v11-kicker">PRIVATE ENTRANCE · FOR AGNES</span>
             <h1><span>One little code,</span><em>then the magic is yours.</em></h1>
             <div className="pe-v12-divider"><i/><Heart fill="currentColor"/><i/></div>
-            <p>Four numbers stand between you and a birthday surprise created only for my princess.</p>
+            <p>Four numbers open your birthday surprise. One hidden heart below leads somewhere even more private.</p>
           </div>
 
           <form className="pe-v11-form" onSubmit={unlock}>
@@ -436,10 +438,27 @@ function PasswordEntrance({ onUnlocked }) {
               whileHover={isComplete?{y:-3,scale:1.015}:{}}
               whileTap={isComplete?{scale:.985}:{}}
             >
-              <span>Open my little world</span>
+              <span>Open Birthday Wishes</span>
               <Heart fill="currentColor"/>
             </motion.button>
           </form>
+
+          <div className="pe-v13-path-divider" aria-hidden="true"><i/><span>or follow the hidden heart</span><i/></div>
+          <motion.button
+            type="button"
+            className="pe-v13-secret-door"
+            onClick={onSecretHeart}
+            whileHover={{y:-3,scale:1.012}}
+            whileTap={{scale:.988}}
+          >
+            <span className="pe-v13-secret-icon"><Heart fill="currentColor"/></span>
+            <span className="pe-v13-secret-copy">
+              <small>ONE MORE HIDDEN DOOR</small>
+              <strong>Secret Heart</strong>
+              <em>Our unwritten chapter · only for Agnes</em>
+            </span>
+            <ArrowRight className="pe-v13-secret-arrow"/>
+          </motion.button>
 
           <div className="pe-v11-hint"><i/> Hint: a date-shaped little secret chosen for this page. <i/></div>
           <div className="pe-v11-signature">for my princess ♡</div>
@@ -845,25 +864,9 @@ function ThreeDaySurprise({ onClose }) {
 function App(){
   const [secretHeartOpen, setSecretHeartOpen] = useState(false);
   const [threeDayOpen, setThreeDayOpen] = useState(false);
-  const [secretHeartKey, setSecretHeartKey] = useState('');
-  const [secretHeartUnlocked, setSecretHeartUnlocked] = useState(false);
-  const [secretHeartError, setSecretHeartError] = useState(false);
-
-  const unlockSecretHeart = (event) => {
-    event?.preventDefault?.();
-    if (secretHeartKey.trim() === 'Myprincess') {
-      setSecretHeartError(false);
-      setSecretHeartUnlocked(true);
-    } else {
-      setSecretHeartError(true);
-    }
-  };
 
   const closeSecretHeart = () => {
     setSecretHeartOpen(false);
-    setSecretHeartKey('');
-    setSecretHeartUnlocked(false);
-    setSecretHeartError(false);
   };
 
   const walkthroughRef = useRef(null)
@@ -957,7 +960,8 @@ function App(){
 
   return <div className="site-shell">
     {phase==='site'&&<><CursorGlow/><motion.div className="scroll-progress" style={{scaleX:progress}}/><MusicControl dimmed={selected!==null}/></>}
-    <AnimatePresence>{phase==='password'&&<PasswordEntrance onUnlocked={()=>setPhase('intro')}/>}</AnimatePresence>
+    <AnimatePresence>{phase==='password'&&<PasswordEntrance onUnlocked={()=>setPhase('intro')} onSecretHeart={()=>setPhase('secret')}/>}</AnimatePresence>
+    <AnimatePresence>{phase==='secret'&&<SecretHeartExperience onClose={()=>setPhase('password')}/>}</AnimatePresence>
     <AnimatePresence>{phase==='loading'&&<CinematicLoader onDone={()=>setPhase('intro')}/>}</AnimatePresence>
     <AnimatePresence>{phase==='intro'&&<StoryIntro onComplete={()=>setPhase('countdown')}/>}</AnimatePresence>
     <AnimatePresence>{phase==='countdown'&&<CinematicCountdown onComplete={()=>setPhase('site')}/>}</AnimatePresence>
@@ -1821,52 +1825,7 @@ function App(){
       <AnimatePresence>
         {secretHeartOpen && (
           <motion.div className="secret-heart-overlay" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:.55}}>
-            <button className="secret-heart-close" type="button" onClick={closeSecretHeart} aria-label="Close secret heart"><X/></button>
-
-            {!secretHeartUnlocked ? (
-              <motion.div className="secret-lock-card" initial={{opacity:0,y:30,scale:.96}} animate={{opacity:1,y:0,scale:1}} transition={{delay:.15,duration:.75,ease:[.16,1,.3,1]}}>
-                <motion.div className="secret-lock-heart" animate={{scale:[1,1.06,1]}} transition={{duration:2.2,repeat:Infinity}}>
-                  <Heart fill="currentColor"/>
-                </motion.div>
-                <span className="secret-kicker">A PRIVATE LITTLE CORNER OF MY HEART</span>
-                <h2>There is one last thing<br/><em>only you should open.</em></h2>
-                <p>I kept this behind one small key, because some words are meant only for my princess.</p>
-                <form onSubmit={unlockSecretHeart} className="secret-key-form">
-                  <label htmlFor="secret-heart-key">Enter our secret key</label>
-                  <div className={`secret-key-box ${secretHeartError?'is-error':''}`}>
-                    <input id="secret-heart-key" type="password" value={secretHeartKey} onChange={e=>{setSecretHeartKey(e.target.value);setSecretHeartError(false)}} placeholder="Type the key…" autoComplete="off"/>
-                    <button type="submit">Open <Heart fill="currentColor"/></button>
-                  </div>
-                  <AnimatePresence>
-                    {secretHeartError && <motion.small className="secret-key-error" initial={{opacity:0,y:-5}} animate={{opacity:1,y:0}} exit={{opacity:0}}>That key did not open my heart. Try the one I chose just for you.</motion.small>}
-                  </AnimatePresence>
-                </form>
-                <span className="secret-key-hint">Hint: the way I see you, written as one word.</span>
-              </motion.div>
-            ) : (
-              <motion.div className="secret-open-world" initial={{opacity:0}} animate={{opacity:1}} transition={{duration:1.1}}>
-                <div className="secret-stars" aria-hidden="true">{Array.from({length:36},(_,i)=><i key={i} style={{'--sx':`${(i*37)%97}%`,'--sy':`${(i*61)%91}%`,'--sd':`${(i%9)*.22}s`}}/>)}</div>
-                <motion.div className="secret-open-heart" initial={{scale:.2,opacity:0}} animate={{scale:[.2,1.12,1],opacity:1}} transition={{duration:1.5,ease:[.16,1,.3,1]}}>
-                  <Heart fill="currentColor"/>
-                </motion.div>
-                <motion.span className="secret-open-kicker" initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{delay:1}}>MY SECRET HEART · FOR AGNES</motion.span>
-                <motion.h2 initial={{opacity:0,y:22,filter:'blur(10px)'}} animate={{opacity:1,y:0,filter:'blur(0px)'}} transition={{delay:1.45,duration:1.1}}>
-                  You were never just<br/><em>a part of my little world.</em>
-                </motion.h2>
-                <motion.p className="secret-open-line" initial={{opacity:0}} animate={{opacity:1}} transition={{delay:2.8,duration:1.2}}>
-                  Somewhere between all these memories, your smile, your little moments, and every ordinary day…
-                </motion.p>
-                <motion.strong className="secret-open-main" initial={{opacity:0,y:18}} animate={{opacity:1,y:0}} transition={{delay:4,duration:1.2}}>
-                  you quietly became the person my heart chooses again and again.
-                </motion.strong>
-                <motion.div className="secret-open-divider" initial={{scaleX:0}} animate={{scaleX:1}} transition={{delay:5.1,duration:1.2}}><span>♥</span></motion.div>
-                <motion.p className="secret-open-final" initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:5.8,duration:1.2}}>
-                  My princess. My favourite person. My sweetest wish for every tomorrow.<br/>
-                  <em>If I could keep only one thing from this entire birthday page, I would keep your smile after reading it.</em>
-                </motion.p>
-                <motion.span className="secret-signature" initial={{opacity:0}} animate={{opacity:1}} transition={{delay:7.2,duration:1.1}}>— always, from my heart ♡</motion.span>
-              </motion.div>
-            )}
+            <SecretHeartExperience onClose={closeSecretHeart} />
           </motion.div>
         )}
       </AnimatePresence>

@@ -9573,6 +9573,9 @@
 .rose-ending-footer{padding-top:70px;padding-bottom:90px}
 .secret-heart-trigger{margin-top:24px}
 
+/* Secret Heart is a full-screen experience; keep the surrounding overlay from adding a second scroll area. */
+.secret-heart-overlay{padding:0!important;overflow:hidden!important}
+
 @media(max-width:1100px){
   .princess-smile-section{grid-template-columns:1fr;gap:34px}
   .ps-photo-area{max-width:600px}
@@ -10585,4 +10588,115 @@ border:1px solid rgba(177,151,123,.21);box-shadow:0 40px 110px rgba(103,81,79,.1
   .day-two-letter-paper{height:86dvh}
   .day-two-letter-scroll{padding-bottom:36px}
   .day-two-signature strong{font-size:30px}
+}
+
+/* ===== V13 two-door entrance: Birthday Wishes + Secret Heart ===== */
+.pe-v13-path-divider{
+  width:min(455px,100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:18px auto 13px;
+  color:#bd8a9b;
+  font:600 8px/1.3 'DM Sans',sans-serif;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.pe-v13-path-divider i{
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(195,120,147,.28));
+}
+.pe-v13-path-divider i:last-child{
+  background:linear-gradient(90deg,rgba(195,120,147,.28),transparent);
+}
+.pe-v13-secret-door{
+  width:min(455px,100%);
+  min-height:76px;
+  display:grid;
+  grid-template-columns:48px 1fr 22px;
+  align-items:center;
+  gap:14px;
+  padding:11px 16px 11px 12px;
+  border-radius:22px;
+  border:1px solid rgba(199,119,149,.22);
+  background:
+    radial-gradient(circle at 10% 50%,rgba(247,211,224,.48),transparent 34%),
+    linear-gradient(145deg,rgba(255,255,255,.93),rgba(255,241,246,.86));
+  box-shadow:0 15px 34px rgba(139,78,100,.09),inset 0 1px 0 rgba(255,255,255,.96);
+  color:#764956;
+  text-align:left;
+  cursor:pointer;
+}
+.pe-v13-secret-icon{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  background:linear-gradient(145deg,#efa0bb,#cc5b84);
+  box-shadow:0 12px 26px rgba(190,82,121,.2),0 0 0 6px rgba(230,151,180,.08);
+}
+.pe-v13-secret-icon svg{width:20px;height:20px}
+.pe-v13-secret-copy{display:flex;min-width:0;flex-direction:column;gap:2px}
+.pe-v13-secret-copy small{
+  font:700 7px/1.3 'DM Sans',sans-serif;
+  letter-spacing:.22em;
+  color:#b37189;
+}
+.pe-v13-secret-copy strong{
+  font:500 24px/.98 'Cormorant Garamond',serif;
+  color:#69434f;
+}
+.pe-v13-secret-copy em{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font:400 9px/1.4 'DM Sans',sans-serif;
+  font-style:normal;
+  color:#a27a87;
+}
+.pe-v13-secret-arrow{width:18px;color:#c56587}
+
+/* Keep the existing entrance balanced after adding the second doorway. */
+.pe-v11-card{
+  min-height:min(760px,94svh);
+  padding-top:34px;
+  padding-bottom:28px;
+}
+.pe-v11-seal{margin-bottom:18px}
+.pe-v12-heading .pe-v11-kicker{margin-bottom:12px}
+.pe-v12-divider{margin-top:19px;margin-bottom:13px}
+.pe-v12-heading p{margin-bottom:20px}
+.pe-v11-signature{margin-top:11px}
+.pe-v11-hint{margin-top:13px}
+
+@media(max-height:820px) and (min-width:700px){
+  .pe-v11-card{min-height:auto;padding-top:26px;padding-bottom:22px}
+  .pe-v11-seal{width:64px;height:64px;margin-bottom:14px}
+  .pe-v11-seal svg:first-child{width:28px}.pe-v11-seal svg:last-child{width:14px;top:20px}
+  .pe-v12-heading h1 span{font-size:clamp(36px,4.2vw,50px)}
+  .pe-v12-heading h1 em{font-size:clamp(42px,4.8vw,60px);margin-top:7px}
+  .pe-v12-divider{margin:14px auto 10px}
+  .pe-v12-heading p{font-size:11px;margin-bottom:14px}
+  .pe-v11-digits input{height:64px}
+  .pe-v11-open{min-height:50px}
+  .pe-v13-path-divider{margin:12px auto 9px}
+  .pe-v13-secret-door{min-height:66px}
+  .pe-v13-secret-icon{width:42px;height:42px}
+  .pe-v13-secret-copy strong{font-size:21px}
+  .pe-v11-hint{margin-top:9px}.pe-v11-signature{margin-top:7px;font-size:22px}
+}
+
+@media(max-width:640px){
+  .pe-v11-card{min-height:auto;padding:26px 16px 22px}
+  .pe-v13-path-divider{margin:13px auto 10px;font-size:7px;gap:8px}
+  .pe-v13-secret-door{grid-template-columns:44px 1fr 18px;gap:10px;min-height:68px;padding:9px 12px 9px 9px;border-radius:19px}
+  .pe-v13-secret-icon{width:44px;height:44px}
+  .pe-v13-secret-copy small{font-size:6px;letter-spacing:.18em}
+  .pe-v13-secret-copy strong{font-size:21px}
+  .pe-v13-secret-copy em{font-size:8px}
+  .pe-v11-hint{margin-top:10px}
 }
