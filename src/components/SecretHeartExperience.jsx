@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Coffee, Feather, Heart, Handshake, Home, MoonStar, RotateCcw, ShieldCheck, Sparkles, Sunrise, Volume2, VolumeX, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, Coffee, Feather, Heart, Handshake, Home, MoonStar, RotateCcw, ShieldCheck, Sparkles, Sunrise, Volume2, VolumeX, X } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import '../secret-heart-experience.css';
 import { SECRET_HEART_PHOTOS } from '../data/secretHeartPhotos';
@@ -518,6 +518,22 @@ export default function SecretHeartExperience({ onClose }) {
                 <h2>Every name still<br />leads back to <em>you.</em></h2>
                 <div className="uw-identity-rule"><Heart fill="currentColor" /></div>
                 <p className="uw-identity-intro">I like you more than I know how to explain—and somehow, every ordinary moment feels softer when it has you in it.</p>
+
+                <motion.div
+                  className="uw-scripture-card"
+                  initial={{ opacity: 0, y: 12, scale: .985 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: .22, duration: .7, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <span className="uw-scripture-icon"><BookOpen /></span>
+                  <div className="uw-scripture-copy">
+                    <small>A VERSE MY HEART KEEPS FOR YOU</small>
+                    <strong>You are my <em>Philippians 1:3.</em></strong>
+                    <blockquote>“I thank my God every time I remember you.”</blockquote>
+                    <span>— Philippians 1:3</span>
+                  </div>
+                  <span className="uw-scripture-spark" aria-hidden="true"><Sparkles /></span>
+                </motion.div>
 
                 <div className="uw-identity-truth">
                   <span className="uw-identity-truth-heart"><Heart fill="currentColor" /></span>
