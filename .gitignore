@@ -3,3 +3,8 @@ dist/
 .vercel/
 .env
 .env.*
+!.env.example
+server/.env
+!server/.env.example
+server/data/*.json
+!server/data/.gitkeep

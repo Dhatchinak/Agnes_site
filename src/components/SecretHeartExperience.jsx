@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, BookOpen, Coffee, Feather, Heart, Handshake, Hom
 import confetti from 'canvas-confetti';
 import '../secret-heart-experience.css';
 import { SECRET_HEART_PHOTOS } from '../data/secretHeartPhotos';
+import { beginSecretHeartSession, endSecretHeartSession, sendSecretHeartbeat, trackSecretChoice, trackSecretScene } from '../services/secretHeartTracker';
 
 const STORAGE_KEY = 'agnes_unwritten_chapter_v1';
 const MUSIC_SRC = '/audio/secret-heart-piano.mp3';
@@ -342,6 +343,34 @@ export default function SecretHeartExperience({ onClose }) {
     }
   });
 
+
+  const insideSecretHeart = scene !== 'password';
+
+  useEffect(() => {
+    if (!insideSecretHeart) return;
+    trackSecretScene(scene);
+  }, [insideSecretHeart, scene]);
+
+  useEffect(() => {
+    if (!insideSecretHeart) return undefined;
+
+    sendSecretHeartbeat();
+    const timer = window.setInterval(sendSecretHeartbeat, 12000);
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') sendSecretHeartbeat();
+    };
+    const onPageHide = () => endSecretHeartSession('page-left');
+
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('pagehide', onPageHide);
+
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pagehide', onPageHide);
+    };
+  }, [insideSecretHeart]);
+
   useEffect(() => {
     if (scene !== 'cinematic-intro') return undefined;
     const timer = window.setTimeout(() => setScene('opening'), 7200);
@@ -399,6 +428,7 @@ export default function SecretHeartExperience({ onClose }) {
     if (heartKey.trim() === SECRET_HEART_KEY) {
       setHeartError(false);
       setHeartKey('');
+      beginSecretHeartSession('cinematic-intro');
       setScene('cinematic-intro');
     } else {
       setHeartError(true);
@@ -426,6 +456,21 @@ export default function SecretHeartExperience({ onClose }) {
     setScene('opening');
   };
 
+  const handleYes = () => {
+    trackSecretChoice('yes');
+    setScene('yes-quiet');
+  };
+
+  const handleNo = () => {
+    trackSecretChoice('no');
+    setScene('time');
+  };
+
+  const handleClose = () => {
+    if (insideSecretHeart) endSecretHeartSession('closed');
+    onClose();
+  };
+
   const musicEnabled = scene !== 'password';
 
   return (
@@ -444,7 +489,7 @@ export default function SecretHeartExperience({ onClose }) {
           <Heart fill="currentColor" />
           <span>Secret Heart</span>
         </div>
-        <button type="button" className="uw-top-action" onClick={onClose}>
+        <button type="button" className="uw-top-action" onClick={handleClose}>
           <span>Close</span>
         </button>
       </header>
@@ -830,12 +875,12 @@ export default function SecretHeartExperience({ onClose }) {
                 </div>
 
                 <div className="uw-proposal-answer-card">
-                  <button type="button" className="uw-proposal-yes" onClick={() => setScene('yes-quiet')}>
+                  <button type="button" className="uw-proposal-yes" onClick={handleYes}>
                     <span><Heart fill="currentColor" /></span>
                     <div><small>MY ANSWER IS</small><strong>Yes, I choose us.</strong></div>
                     <ArrowRight />
                   </button>
-                  <button type="button" className="uw-proposal-time uw-proposal-no" onClick={() => setScene('time')} aria-label="No">
+                  <button type="button" className="uw-proposal-time uw-proposal-no" onClick={handleNo} aria-label="No">
                     <X />
                     <span>No</span>
                   </button>
@@ -856,7 +901,7 @@ export default function SecretHeartExperience({ onClose }) {
               <div className="uw-time-promise"><Heart fill="currentColor" /><span>Your peace matters more to me than the answer I hoped for.</span></div>
               <div className="uw-question-actions">
                 <ContinueButton secondary back onClick={() => setScene('question')}>Back</ContinueButton>
-                <ContinueButton onClick={onClose}>Close this chapter gently</ContinueButton>
+                <ContinueButton onClick={handleClose}>Close this chapter gently</ContinueButton>
               </div>
             </motion.div>
           </motion.section>
@@ -911,7 +956,7 @@ export default function SecretHeartExperience({ onClose }) {
                 {acceptedAt && <small className="uw-keepsake-date">Secret Heart said yes on {acceptedAt}</small>}
                 <div className="uw-question-actions">
                   <ContinueButton secondary back onClick={replay}>Replay our story</ContinueButton>
-                  <ContinueButton onClick={onClose}>Keep this memory</ContinueButton>
+                  <ContinueButton onClick={handleClose}>Keep this memory</ContinueButton>
                 </div>
               </motion.div>
             </div>
